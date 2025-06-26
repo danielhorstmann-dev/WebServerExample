@@ -8,12 +8,13 @@ public class AddHandler extends Handler {
     public void handle(HttpExchange exchange) throws IOException {
         Map<String, String> queryParams = parseQueryParams(exchange.getRequestURI().getQuery());
 
-        int a = safeParse(queryParams.get("a"));
-        int b = safeParse(queryParams.get("b"));
-        int sum = a + b;
+        int sum = 0;
+        for (Map.Entry<String, String> entrySet : queryParams.entrySet()) {
+            sum += safeParse(entrySet.getValue());
+        }
 
         String response = "Summe: " + sum;
-        sendResponse(exchange, response, 200);
+        sendResponse(exchange, response, 200, ContentType.PLAIN);
     }
 
     private int safeParse(String s) {

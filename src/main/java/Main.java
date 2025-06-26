@@ -18,8 +18,10 @@ public class Main {
         server.createContext("/jsonadd", new JsonAddHandler());
         server.createContext("/addform", new AddFormHandler());
         server.createContext("/jsonaddform", new JsonAddFormHandler());
-        server.createContext("/notes", new NoteHandler());
-        server.createContext("/notes/", new NoteHandler());
+        NoteHandler sharedNoteHandler = new NoteHandler();
+        server.createContext("/notes", sharedNoteHandler);
+        server.createContext("/notes/", sharedNoteHandler);
+
         server.createContext("/notesui", new NotesUiHandler());
 
 

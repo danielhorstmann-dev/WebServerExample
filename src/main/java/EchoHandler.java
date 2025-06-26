@@ -11,7 +11,7 @@ public class EchoHandler extends Handler {
         Map<String, String> queryParams = parseQueryParams(exchange.getRequestURI().getQuery());
 
         String msg = queryParams.getOrDefault("msg", "Nichts empfangen");
-        sendResponse(exchange, msg, 200);
+        sendResponse(exchange, msg, 200, ContentType.PLAIN);
     }
 
 

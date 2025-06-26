@@ -20,7 +20,8 @@ public abstract class Handler implements HttpHandler {
                 ));
     }
 
-    public void sendResponse(HttpExchange exchange, String response, int statuscode) throws IOException {
+    public void sendResponse(HttpExchange exchange, String response, int statuscode, ContentType contentType) throws IOException {
+        exchange.getResponseHeaders().add("Content-type", contentType.get());
         exchange.sendResponseHeaders(statuscode, response.getBytes().length);
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(response.getBytes());

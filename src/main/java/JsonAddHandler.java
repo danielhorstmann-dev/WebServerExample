@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 public class JsonAddHandler extends Handler {
 
@@ -17,7 +20,7 @@ public class JsonAddHandler extends Handler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
-            sendResponse(exchange, "Nur POST erlaubt", 405);
+            sendResponse(exchange, "Nur POST erlaubt", 405, ContentType.PLAIN);
             return;
         }
 
@@ -37,11 +40,18 @@ public class JsonAddHandler extends Handler {
 
         String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
         System.out.println("Empfangener Body: " + body);
-        JsonNode root = objectMapper.readTree(body);
+        JsonNode jsonNode = objectMapper.readTree(body);
 
-        double a = root.has("a") ? root.get("a").asDouble(0) : 0;
-        double b = root.has("b") ? root.get("b").asDouble(0) : 0;
-        double sum = a + b;
+        double sum = 0;
+        Iterator<Map.Entry<String, JsonNode>> fields = jsonNode.fields();
+        while (fields.hasNext()) {
+            Map.Entry<String, JsonNode> entry = fields.next();
+            sum += entry.getValue().asDouble(0);
+        }
+
+/*        double a = jsonNode.get("a").asDouble(0);
+        double b = jsonNode.get("b").asDouble(0);
+        double sum = a + b;*/
 
         JsonNode response = objectMapper.createObjectNode()
                 .put("sum", sum)
@@ -49,14 +59,6 @@ public class JsonAddHandler extends Handler {
 
         String jsonResponse = objectMapper.writeValueAsString(response);
 
-        sendJsonResponse(exchange, jsonResponse);
-    }
-
-    private void sendJsonResponse(HttpExchange exchange, String json) throws IOException {
-        exchange.getResponseHeaders().add("Content-Type", "application/json");
-        exchange.sendResponseHeaders(200, json.getBytes().length);
-        try (OutputStream os = exchange.getResponseBody()) {
-            os.write(json.getBytes());
-        }
+        sendResponse(exchange, jsonResponse, 200, ContentType.JSON);
     }
 }

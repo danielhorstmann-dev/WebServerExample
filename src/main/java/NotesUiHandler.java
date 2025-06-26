@@ -79,7 +79,6 @@ public class NotesUiHandler extends Handler {
             </body>
             </html>
         """;
-        exchange.getResponseHeaders().add("Content-Type", "text/html");
-        sendResponse(exchange, html, 200);
+        sendResponse(exchange, html, 200, ContentType.HTML);
     }
 }

@@ -12,7 +12,7 @@ public class JsonAddFormHandler extends Handler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
-            sendResponse(exchange, "Nur POST erlaubt", 405);
+            sendResponse(exchange, "Nur POST erlaubt", 405, ContentType.PLAIN);
             return;
         }
 
@@ -39,8 +39,7 @@ public class JsonAddFormHandler extends Handler {
                 </body>
                 </html>
                 """.formatted(sum);
-        exchange.getResponseHeaders().add("Content-Type", "text/html");
-        sendResponse(exchange, htmlResponse, 200);
+        sendResponse(exchange, htmlResponse, 200, ContentType.HTML);
     }
 
     private double safeParse(String s) {

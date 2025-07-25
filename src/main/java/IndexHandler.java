@@ -1,7 +1,6 @@
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
-import java.util.Map;
 
 public class IndexHandler extends Handler {
     @Override

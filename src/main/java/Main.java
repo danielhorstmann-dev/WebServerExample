@@ -13,14 +13,18 @@ public class Main {
             throw new RuntimeException(e);
         }
 
+        server.createContext("/javascript/script.js", new ScriptHandler());
+
+        server.createContext("/index", new IndexHandler());  // start
         server.createContext("/add", new AddHandler());
         server.createContext("/echo", new EchoHandler());
         server.createContext("/jsonadd", new JsonAddHandler());
         server.createContext("/addform", new AddFormHandler());
         server.createContext("/jsonaddform", new JsonAddFormHandler());
         NoteHandler sharedNoteHandler = new NoteHandler();
-        server.createContext("/notes", sharedNoteHandler);
-        server.createContext("/notes/", sharedNoteHandler);
+        server.createContext("/notes", sharedNoteHandler);   // ohne ID
+        server.createContext("/notes/", sharedNoteHandler);  // mit ID
+        server.createContext("/weather", new WeatherHandler());
 
         server.createContext("/notesui", new NotesUiHandler());
 
@@ -29,7 +33,7 @@ public class Main {
 //        server.setExecutor(null);
         server.start();
 
-        System.out.println("Server läuft auf http://localhost:8000/");
+        System.out.println("Server läuft auf http://localhost:8000/index");
     }
 
 

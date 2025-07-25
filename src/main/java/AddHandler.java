@@ -7,6 +7,7 @@ public class AddHandler extends Handler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         Map<String, String> queryParams = parseQueryParams(exchange.getRequestURI().getQuery());
+        System.out.println(exchange.getRequestURI().getQuery());
 
         int sum = 0;
         for (Map.Entry<String, String> entrySet : queryParams.entrySet()) {
@@ -18,7 +19,6 @@ public class AddHandler extends Handler {
     }
 
     private int safeParse(String s) {
-        if (s == null) return 0;
         try {
             return Integer.parseInt(s);
         } catch (NumberFormatException e) {

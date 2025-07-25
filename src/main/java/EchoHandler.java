@@ -6,7 +6,8 @@ import java.util.Map;
 public class EchoHandler extends Handler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        System.out.println(exchange.getRequestURI().getQuery());
+        String query = exchange.getRequestURI().getQuery();
+        System.out.println(query);
 
         Map<String, String> queryParams = parseQueryParams(exchange.getRequestURI().getQuery());
 

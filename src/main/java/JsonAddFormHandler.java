@@ -11,11 +11,6 @@ public class JsonAddFormHandler extends Handler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
-            sendResponse(exchange, "Nur POST erlaubt", 405, ContentType.PLAIN);
-            return;
-        }
-
         String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
         System.out.println(body);
         Map<String, String> data = Arrays.stream(body.split("&"))
